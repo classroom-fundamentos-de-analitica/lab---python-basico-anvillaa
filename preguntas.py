@@ -21,14 +21,12 @@ def pregunta_01():
     214
 
     """
-    acum = 0
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            acum+=int(line[1])
-    
-    return acum
-
+    suma = 0
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            suma += int(values[1])
+    return suma
 
 
 def pregunta_02():
@@ -46,15 +44,16 @@ def pregunta_02():
     ]
 
     """
-    cuenta ={}
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            if line[0] in cuenta:
-                cuenta[line[0]]+=1
+    word = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            if values[0] in word:
+                word[values[0]] += 1
             else:
-                cuenta[line[0]]=1
-    return (sorted(cuenta.items()))
+                word[values[0]] = 1
+        word = sorted(word.items())
+    return word
 
 
 def pregunta_03():
@@ -72,16 +71,16 @@ def pregunta_03():
     ]
 
     """
-
-    cuenta ={}  
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            if line[0] in cuenta:
-                cuenta[line[0]]+=int(line[1])
+    word = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            if values[0] in word:
+                word[values[0]] += int(values[1])
             else:
-                cuenta[line[0]]=int(line[1])          
-    return (sorted(cuenta.items()))
+                word[values[0]] = int(values[1])
+        word = sorted(word.items())
+    return word
 
 
 def pregunta_04():
@@ -106,18 +105,18 @@ def pregunta_04():
     ]
 
     """
-
-    cuenta ={}  
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            mes = line[2].split("-")[1]
-            if mes in cuenta:
-                cuenta[mes]+=1
+    mes = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            m = values[2].split("-")[1]
+            if m in mes:
+                mes[m] += 1
             else:
-                cuenta[mes]=1
-    return(sorted(cuenta.items()))
-   
+                mes[m] = 1
+        mes = sorted(mes.items())
+    return mes
+
 
 def pregunta_05():
     """
@@ -134,31 +133,27 @@ def pregunta_05():
     ]
 
     """
-    cuenta ={}  
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-
-            if line[0] in cuenta:
-                if int(line[1]) > int(cuenta[line[0]][0]):
-                    cuenta[line[0]][0]=int(line[1])
-
-                elif int(line[1]) < int(cuenta[line[0]][1]):
-                    cuenta[line[0]][1]=int(line[1]) 
-
+    max_min = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            if values[0] in max_min:
+                if int(values[1]) > max_min[values[0]][0]:
+                    max_min[values[0]][0] = int(values[1])
+                elif int(values[1]) < max_min[values[0]][1]:
+                    max_min[values[0]][1] = int(values[1])
             else:
-                cuenta[line[0]]=[int(line[1]),int(line[1])]
-    result = sorted(cuenta.items())
-    max_min = []
-    for i in result:
-        max_min.append((i[0],i[1][0],i[1][1]))
-    return max_min
-
+                max_min[values[0]] = [int(values[1]), int(values[1])]
+    max_min_sorted = sorted(max_min.items())
+    mm = []
+    for item in max_min_sorted:
+        mm.append((item[0], item[1][0], item[1][1]))
+    return mm
 
 
 def pregunta_06():
     """
-    La columna 5 codifica un diccionario donde cada cadena de tres letras corresponde a
+    La columna 5 codifica un diccionario donde cada cadena de tres word corresponde a
     una clave y el valor despues del caracter `:` corresponde al valor asociado a la
     clave. Por cada clave, obtenga el valor asociado mas pequeño y el valor asociado mas
     grande computados sobre todo el archivo.
@@ -178,39 +173,31 @@ def pregunta_06():
     ]
 
     """
-
-    cuentas = {}    
-
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            dic = line[4].split(",")
-            for i in dic:
-                clave = i.split(":")[0]
-                
-                valor = int(i.split(":")[1])
-
-                if clave in cuentas:
-                    if valor > cuentas[clave][0]:
-                        cuentas[clave][0] = valor
-                    elif valor < cuentas[clave][1]:
-                        cuentas[clave][1] = valor
+    max_min = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()[4].split(",")
+            for value in values:
+                v = value.split(":")
+                if v[0] in max_min:
+                    if int(v[1]) > max_min[v[0]][1]:
+                        max_min[v[0]][1] = int(v[1])
+                    elif int(v[1]) < max_min[v[0]][0]:
+                        max_min[v[0]][0] = int(v[1])
                 else:
-                    cuentas[clave] = [valor,valor]
-    result = sorted(cuentas.items())    
-    max_min = []
-    for i in result:
-        max_min.append((i[0],i[1][1],i[1][0]))
+                    max_min[v[0]] = [int(v[1]), int(v[1])]
 
-    return max_min
-
-    
+    max_min_sorted = sorted(max_min.items())
+    mm = []
+    for item in max_min_sorted:
+        mm.append((item[0], item[1][0], item[1][1]))
+    return mm
 
 
 def pregunta_07():
     """
     Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla contiene un
-    valor posible de la columna 2 y una lista con todas las letras asociadas (columna 1)
+    valor posible de la columna 2 y una lista con todas las word asociadas (columna 1)
     a dicho valor de la columna 2.
 
     Rta/
@@ -228,22 +215,23 @@ def pregunta_07():
     ]
 
     """
-
-    cuenta ={}
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            if line[1] in cuenta:
-                cuenta[line[1]].append(line[0])
+    numbers = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            values[1] = int(values[1])
+            if values[1] in numbers:
+                numbers[values[1]].append(values[0])
             else:
-                cuenta[line[1]]=[line[0]]
-    return sorted(cuenta.items())
+                numbers[values[1]] = [values[0]]
+    numbers = sorted(numbers.items())
+    return numbers
 
 
 def pregunta_08():
     """
     Genere una lista de tuplas, donde el primer elemento de cada tupla contiene  el valor
-    de la segunda columna; la segunda parte de la tupla es una lista con las letras
+    de la segunda columna; la segunda parte de la tupla es una lista con las word
     (ordenadas y sin repetir letra) de la primera  columna que aparecen asociadas a dicho
     valor de la segunda columna.
 
@@ -262,22 +250,19 @@ def pregunta_08():
     ]
 
     """
-    cuenta ={}
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            if line[1] in cuenta:
-                if line[0] not in cuenta[line[1]]:
-                    cuenta[line[1]].add(line[0])
+    numbers = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            values[1] = int(values[1])
+            if values[1] in numbers:
+                numbers[values[1]].add(values[0])
             else:
-                cuenta[line[1]]={line[0]}
-    
-
-    result = []
-    for i in sorted(cuenta.items()):
-        result.append((int(i[0]),sorted(list(i[1]))))
-    return result
- 
+                numbers[values[1]] = {values[0]}
+    numbers = sorted(numbers.items())
+    for i in range(len(numbers)):
+        numbers[i] = (numbers[i][0], sorted(numbers[i][1]))
+    return numbers
 
 
 def pregunta_09():
@@ -300,20 +285,18 @@ def pregunta_09():
     }
 
     """
-    cuenta ={}  
-    with open("data.csv") as f: 
-        for line in f:
-            line = line.split()
-            dic = line[4].split(",")
-            for i in dic:
-                clave = i.split(":")[0]
-                if clave in cuenta:
-                    cuenta[clave]+=1
+    dic = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()[4].split(",")
+            for value in values:
+                v = value.split(":")
+                if v[0] in dic:
+                    dic[v[0]] += 1
                 else:
-                    cuenta[clave]=1
-    result = dict(sorted(cuenta.items()))   
-   
-    return result
+                    dic[v[0]] = 1
+    dic = dict(sorted(dic.items()))
+    return dic
 
 
 def pregunta_10():
@@ -334,15 +317,13 @@ def pregunta_10():
 
 
     """
-
     total = []
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            gg = line[3].split(",") 
-            dic = line[4].split(",")            
-            total.append((line[0],len(gg),len(dic)))
-
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            first = len(values[3].split(","))
+            second = len(values[4].split(","))
+            total.append((values[0], first, second))
     return total
 
 
@@ -364,19 +345,21 @@ def pregunta_11():
 
 
     """
-    cuenta ={}  
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            dic = line[3].split(",")
-            for i in dic:
-                if i in cuenta:
-                    cuenta[i]+=int(line[1])
+    dic = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            second_column = int(values[1])
+            values = values[3].split(",")
+            for value in values:
+                if value in dic:
+                    dic[value] += second_column
                 else:
-                    cuenta[i]=int(line[1])
-    result = dict(sorted(cuenta.items()))
-    return result
- 
+                    dic[value] = second_column
+    dic = dict(sorted(dic.items()))
+    return dic
+
+
 def pregunta_12():
     """
     Genere un diccionario que contengan como clave la columna 1 y como valor la suma de
@@ -392,20 +375,16 @@ def pregunta_12():
     }
 
     """
-    cuenta ={}
-    with open("data.csv") as f:
-        for line in f:
-            line = line.split()
-            clave = (line[0]) 
-            dic = line[4].split(",")
-            for i in dic:
-                
-                valor = int(i.split(":")[1])
-                if clave in cuenta:
-                    cuenta[clave]+=valor
-                else:
-                    cuenta[clave]=valor
-
-    result = dict(sorted(cuenta.items()))
-    
-    return result
+    words = {}
+    with open("data.csv", "r") as file:
+        for line in file:
+            values = line.strip().split()
+            if values[0] in words:
+                total = sum([int(x.split(":")[1]) for x in values[4].split(",")])
+                words[values[0]] += total
+            else:
+                words[values[0]] = sum(
+                    [int(x.split(":")[1]) for x in values[4].split(",")]
+                )
+    words = dict(sorted(words.items()))
+    return words
